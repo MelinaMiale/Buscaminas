@@ -1,4 +1,4 @@
-package test;
+/*package test;
 
 import org.junit.Test;
 
@@ -25,3 +25,4 @@ public class TestBuscaminas {
 	
 
 }
+*/

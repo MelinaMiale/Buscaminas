@@ -30,7 +30,7 @@ public class Buscaminas {
 		for(int i = 0; i < cantidadDeFilas; i++) {
 			for(int j = 0; j< cantidadDeColumnas; j++) {
 				this.matriz[i][j] = new Celda();
-				this.matriz[i][j].setValue(0);
+				this.matriz[i][j].setValue("0");
 				this.matriz[i][j].setChecked(false);
 				this.matriz[i][j].setNumeroFila(i);
 				this.matriz[i][j].setNumeroColumna(j);
@@ -45,11 +45,9 @@ public class Buscaminas {
 		Random random = new Random();
 		
 		while(contadorMinas < cantidadDeMinas) {
-			//obtener valores de celdas aleatorias (combo fila-columna) y asignarle una mina
-			int numeroFila = random.nextInt(nivel.getFilas());
-			int numeroColumna = random.nextInt(nivel.getColumnas());
-		
-			this.matriz[numeroFila][numeroColumna].setValue(1);
+			int numeroFila = random.nextInt(nivel.getFilas()-1);
+			int numeroColumna = random.nextInt(nivel.getColumnas()-1);
+			this.matriz[numeroFila][numeroColumna].setValue("*");
 			contadorMinas++;
 		}
 				
@@ -59,16 +57,45 @@ public class Buscaminas {
 	public List <String> obtenerUbicacionDeMinas () {
 			List <String> ubicacionMinas = new ArrayList <String>();			
 			
-			for(int i = 0; i < this.nivel.getFilas() ; i++) {
-				for(int j = 0; j< this.nivel.getColumnas(); j++) {
-					if(this.matriz[i][j].getValue() == 1) {
-						ubicacionMinas.add("Celda: " + i + ", " + j); 
+			for(Integer  i = 0; i < this.nivel.getFilas() ; i++) {
+				for(Integer  j = 0; j< this.nivel.getColumnas(); j++) {
+					if(this.matriz[i][j].getValue().equals("*")) {
+						ubicacionMinas.add( i.toString() + "-" + j.toString()); 
 					}
 				}
 			}
 			
 			return ubicacionMinas ;
 		}
+
+	public void mostrarPartida(boolean juegoFinalizado) {
+		int contadorColumnas = 0;
+		while(contadorColumnas < this.nivel.getColumnas()) {
+			System.out.print( "   " + contadorColumnas);
+			contadorColumnas++;
+		}
+		System.out.println("");
+		for(int i = 0; i < this.nivel.getFilas() ; i++) {
+			for(int j = 0; j< this.nivel.getColumnas(); j++) {
+				if(j == 0) {
+					System.out.print(i);
+				}
+				if( j < this.matriz[i].length - 1) {
+					System.out.print(juegoFinalizado ? "  " + this.matriz[i][j].getValue().toString()  : " O ");
+				} else {
+					System.out.print(juegoFinalizado ? "  " + this.matriz[i][j].getValue().toString()+"\n" : " O \n");
+				}
+			}
+		}
+		
+	}
+
+	public boolean buscarMina(String casilla) {
+		if(casilla != null && !casilla.isEmpty()) {
+			return this.obtenerUbicacionDeMinas().contains(casilla);
+		}
+		return false;
+	}
 
 	
 }

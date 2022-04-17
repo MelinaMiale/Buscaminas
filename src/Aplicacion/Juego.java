@@ -12,45 +12,39 @@ public class Juego {
 		System.out.println("¡Bienvenido a Buscaminas!");
 	    Integer  nivelElegido;
 	    
-	    Scanner scanner = new Scanner(System.in);
+	    Scanner lector = new Scanner(System.in);
 	    
 	    System.out.println("Ingrese el nivel de dificultad \n");
 	    System.out.println("Para el " + Nivel.Inicial.getDescription() + " ingrese: "+   Nivel.Inicial.getId());
 	    System.out.println("Para el " + Nivel.Moderado.getDescription() + " ingrese: "+   Nivel.Moderado.getId());
 	    System.out.println("Para el " + Nivel.Experto.getDescription() + " ingrese: "+   Nivel.Experto.getId());
 	    
-	    nivelElegido = scanner.nextInt();
-		System.out.println("Se elligió el nivel: " + nivelElegido);
-		
+	    nivelElegido = lector.nextInt();
 		Nivel nivelDeDificultad = Nivel.setById(nivelElegido);
-		
+				
 		Buscaminas nuevoJuego = new Buscaminas(nivelDeDificultad);
 		nuevoJuego.inicializarMatriz();
 		nuevoJuego.generarMinas(nivelDeDificultad);
+
+		System.out.println("¡Que inice el juego!");
+		System.out.println("Nivel de dificultad: " + nivelDeDificultad.getDescription());
 		
-		System.out.println("cantidad de filas de la matriz: " + nuevoJuego.getMatriz().length);
-		System.out.println("cantidad de columnas: " + nuevoJuego.getMatriz()[0].length);
-		System.out.print(nuevoJuego.obtenerUbicacionDeMinas());
+		boolean juegoFinalizado = false;
 		
-		
+		nuevoJuego.mostrarPartida(juegoFinalizado);
+	   boolean minaEncontrada = false;
 	    
+	   do {
+		    	System.out.println("Elija una casilla");
+		    	 String celda = lector.next();
+		    	 minaEncontrada = nuevoJuego.buscarMina(celda);
+	   } while (!minaEncontrada);
 	    
-	    
-	    
-	    
-		
-		
-		//1. pedir al  usuario que elija el nivel en el que quiere jugar
-		//2. crear nuevo buscaminas con valores del punto 1
-		//3. generar valores aleatorios para cada celda de la matriz
-		//4. agregar interaccion con usuario
-				//4.a)  recepcionar celda elegida por el usuario, cambiar el estado y validar que valor tiene para saber si tiene o no una mina
-				//4.b) en caso que el valor sea mina, entonces avisar que 'perdio el juego'
-		
-		//5. refactorizar para mostrar las minas una vez que se pierde el juego
-		
-		
-		
+	    if(minaEncontrada) {
+	    	juegoFinalizado = true;
+	    	 System.out.println("Fin del Juego");
+	    	nuevoJuego.mostrarPartida(juegoFinalizado);
+	    }
 	}
 
 }
